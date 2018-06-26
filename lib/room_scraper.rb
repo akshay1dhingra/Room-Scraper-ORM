@@ -26,7 +26,7 @@ class RoomScraper
       {
         :date_created => row.search("datetime"),
         :title => row.search("a.hdrlink").text,
-        :url => "#{@index_url}#{row.search("a.hdrlink").attribute("href")}",
+        :url => "#{@index_url}#{row.search("a.hdrlnk").attribute("href").text}",
         :price => row.search("span.result-price").text,
       }
     end
