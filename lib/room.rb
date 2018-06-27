@@ -1,5 +1,5 @@
 class Room
-  attr_accessor :title, :date_created, :price, :url
+  attr_accessor :id, :title, :date_created, :price, :url
 
   def self.create_from_hash(hash)
     new_from_hash(hash).save
@@ -29,12 +29,16 @@ class Room
     insert
   end
 
-  def self.all
+  def self.all #creates objects for each room and instances for each its attributes
     sql = <<-SQL
       SELECT * FROM rooms;
     SQL
 
     rows = DB[:connection].execute(sql)
+    # go from a row [1, "title", date, price, url] to an instance #<Room>
+    rows.collect do |row|
+      self.new_from_db(row)
+    end
   end
 
 
