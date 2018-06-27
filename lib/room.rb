@@ -11,6 +11,7 @@ class Room
     room.date_created = hash[:date_created]
     room.price = hash[:price]
     room.url = hash[:url]
+    binding.pry
     room
   end
 
