@@ -16,10 +16,16 @@ class Room
   end
 
   def save
+    insert
+  end
+
+  def insert
     puts "YOU ARE ABOUT TO SAVE #{self}"
     sql = <<-SQL
       INSERT INTO rooms (title, date_created, price, url) VALUES (?, ?, ?, ?)
     SQL
+
+    DB[:connection].execute(sql, self.title, self.date_created, self.price, self.url)
   end
 
   def self.create_table
