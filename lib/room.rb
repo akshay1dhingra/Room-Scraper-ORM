@@ -15,6 +15,17 @@ class Room
     room
   end
 
+  def self.by_price(order = "ASC")
+    sql = <<-SQL
+      SELECT * FROM rooms ORDER BY #{order}
+      SQL
+
+      rows = DB[:connection].execute(sql)
+      self.new_from_rows(rows)
+  end
+
+  #Room.by_price("ASC") #=> lowest price room first
+  #Room.by_price("DESC") #=> highest price room first
   def self.new_from_db(row)
     self.new.tap do |room|
       room.id = row[0]
@@ -36,9 +47,7 @@ class Room
 
     rows = DB[:connection].execute(sql)
     # go from a row [1, "title", date, price, url] to an instance #<Room>
-    rows.collect do |row|
-      self.new_from_db(row)
-    end
+    self.new_from_rows(rows)
   end
 
 
