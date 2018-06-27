@@ -57,7 +57,6 @@ class Room
 
 
   def insert
-
     sql = <<-SQL
       INSERT INTO rooms (title, date_created, price, url) VALUES (?, ?, ?, ?)
     SQL
