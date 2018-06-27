@@ -15,9 +15,28 @@ class Room
     room
   end
 
+  def self.new_from_db(row)
+    self.new.tap do |room|
+      room.id = row[0]
+      room.title = row[1]
+      room.date_created = row[2]
+      room.price = row[3]
+      room.url = row[4]
+    end
+  end
+
   def save
     insert
   end
+
+  def self.all
+    sql = <<-SQL
+      SELECT * FROM rooms;
+    SQL
+
+    rows = DB[:connection].execute(sql)
+  end
+
 
   def insert
     puts "YOU ARE ABOUT TO SAVE #{self}"
