@@ -15,18 +15,24 @@ class Room
     room
   end
 
-  def self.by_price(order = "ASC")
+  def self.by_price(order = "DESC")
     sql = <<-SQL
-      SELECT * FROM rooms ORDER BY #{order}
-      SQL
+      SELECT * FROM rooms ORDER BY price #{order}
+    SQL
 
-      rows = DB[:connection].execute(sql)
-      self.new_from_rows(rows)
+    rows = DB[:connection].execute(sql)
+    self.new_from_rows(rows)
   end
 
   #Room.by_price("ASC") #=> lowest price room first
   #Room.by_price("DESC") #=> highest price room first
-  def self.new_from_db(row)
+  def self.new_from_rows(rows)
+    rows.collect do |row|
+      self.new_from_db(row)
+    end
+  end
+
+  def self.new_from_db(rows)
     self.new.tap do |room|
       room.id = row[0]
       room.title = row[1]
@@ -46,13 +52,12 @@ class Room
     SQL
 
     rows = DB[:connection].execute(sql)
-    # go from a row [1, "title", date, price, url] to an instance #<Room>
     self.new_from_rows(rows)
   end
 
 
   def insert
-    puts "YOU ARE ABOUT TO SAVE #{self}"
+
     sql = <<-SQL
       INSERT INTO rooms (title, date_created, price, url) VALUES (?, ?, ?, ?)
     SQL
@@ -73,5 +78,4 @@ class Room
 
     DB[:connection].execute(sql)
   end
-
 end
