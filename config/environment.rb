@@ -1,6 +1,6 @@
 require 'bundler'
 Bundler.require
-
+#require 'active_record'
 require 'open-uri'
 
 
@@ -9,7 +9,7 @@ require 'open-uri'
 #}
 
 ActiveRecord::Base.establish_connection(
-  :driver => "sqlite3"
+  :adapter => "sqlite3"
   :database => "db/rooms-development.sqlite"
 )
 
