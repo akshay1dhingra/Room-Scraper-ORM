@@ -32,7 +32,7 @@ class Room
     end
   end
 
-  def self.new_from_db(rows)
+  def self.new_from_db(row)
     self.new.tap do |room|
       room.id = row[0]
       room.title = row[1]
